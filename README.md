@@ -85,9 +85,9 @@ Follow these steps to set up and run the backend:
 
 ## Swagger-ui
 
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+[http://localhost:8088/swagger-ui/index.html](http://localhost:8088/swagger-ui/index.html)
 
-![swagger-ui](images/swagger-ui.jpg)
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/0876cde6-ee3b-4062-a8a5-ab884c0d0e8d">
 
 ## Technologies Used
 

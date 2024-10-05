@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  # mysql
+  mysql8-container:
+    container_name: mysql8-container
+    image: mysql:${MYSQL_TAG}
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    # volumes:
+    #   - ./sql/shopapp.sql:/docker-entrypoint-initdb.d/init-script.sql
+    networks:
+      - shopapp-network
+
+  # redis
+  redis-container:
+    container_name: redis-container
+    image: redis:${REDIS_TAG}
+    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - shopapp-network
+
+  # neo4j
+  neo4j-container:
+    container_name: neo4j-container
+    image: neo4j:${NEO4J_TAG}
+    ports:
+      - "${NEO4J_HTTP_PORT}:7474"
+      - "${NEO4J_BOLT_PORT}:7687"
+    environment:
+      - NEO4J_AUTH=${NEO4J_AUTH}
+    volumes:
+      - ./neo4j:/data
+    networks:
+      - shopapp-network
+
+# network
+networks:
+  shopapp-network:
+    name: shopapp-network
+    driver: bridge
+
+# RUN DOCKER
+# docker-compose up -d
+# docker-compose up -d mysql8-container
+# docker-compose up -d redis-container
+# docker-compose up -d neo4j-container
+# docker-compose up -d zookeeper-01
+# docker-compose up -d zookeeper-02
+# docker-compose up -d zookeeper-03
+# docker-compose up -d kafka-broker-01
+# docker-compose up -d shopapp-spring-container
+
+

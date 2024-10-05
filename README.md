@@ -1,6 +1,4 @@
-![](images/logo_images.png)
-
-# Shopp App - Backend
+# Web-App-Backend-SpringBoot
 
 Backend system provides restful API for web or mobile.
 
@@ -85,20 +83,11 @@ Follow these steps to set up and run the backend:
   mvn spring-boot:run
 ```
 
-## Databaes Mysql8
-
-![mysql-8](images/database_diagram.jpg)
-
 ## Swagger-ui
 
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ![swagger-ui](images/swagger-ui.jpg)
-
-## PostMan Client
-
-![postman-project](images/postman_project.jpg)
-
 
 ## Technologies Used
 

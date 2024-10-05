@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
-                        name = "hoangtien2k3",
-                        email = "hoangtien2k3qx1@gmail.com",
-                        url = "hoangtien2k3.github.io/index.html"
+                        name = "nhom 1 - web app demo swagger-ui",
+                        email = "nhom1demo@gmail.com",
+                        url = "hoangtien2k3.github.io"
                 ),
                 description = "Open Api documentation for Shopp App",
-                title = "Open Api Shopp App (E-Ecommerce)",
+                title = "Open Api Web App Backend SpringBoot - Nhom 1",
                 version = "0.0.1-SNAPSHOT",
                 license = @License(
                         name = "Apache License Version 2.0",
@@ -30,11 +30,11 @@ import org.springframework.context.annotation.Configuration;
         servers = {
                 @Server(
                         description = "Local Environment",
-                        url = "http://localhost:8080"
+                        url = "http://localhost:8088"
                 ),
                 @Server(
                         description = "Pro Environment",
-                        url = "http://tiens-mbp:8080"
+                        url = "http://tiens-mbp:8088"
                 ),
 
         },

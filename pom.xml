@@ -9,10 +9,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.hoangtien2k3</groupId>
-	<artifactId>shopapp-backend</artifactId>
+	<artifactId>web-app-backend-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shopapp-backend</name>
-	<description>Shop App Backend Project</description>
+	<name>web-app-backend-springboot</name>
+	<description>Web App Backend Project</description>
 	<properties>
 		<java.version>17</java.version>
 		<projectlombok-lombok.version>1.18.30</projectlombok-lombok.version>

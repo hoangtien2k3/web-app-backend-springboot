@@ -1,21 +1,22 @@
-# Sử dụng hình ảnh Maven chính thức với OpenJDK 17 để build và chạy ứng dụng
-FROM openjdk:17
-# Thiết lập thư mục làm việc trong container
+FROM maven:3.9.8-amazoncorretto-17 AS build
 WORKDIR /app
-# Sao chép file pom.xml và thư mục .mvn vào thư mục làm việc của container
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-# Download các dependencies trước
-RUN ./mvnw dependency:go-offline
-# Sao chép toàn bộ mã nguồn vào container
+COPY pom.xml .
 COPY src ./src
-# Build ứng dụng Spring Boot
-RUN ./mvnw clean package -DskipTests
-# Run container
-CMD ["./mvnw", "spring-boot:run"]
+RUN mvn package -DskipTests
 
-# Pull and start/run a DockerHub container
-# -d: Chạy container ở chế độ nền (detach mode)
-# -p 8080:8080: Chuyển tiếp cổng 8080 từ container sang cổng 8080 trên máy tính host
-# -v "$(pwd):/app": Mount thư mục hiện tại của máy tính host vào /app trong container
-# docker run -dp 8080:8080 --name shopapp-backend -v "$(pwd):/app" --network shopapp-network hoangtien2k3/shopapp-backend:v1.0.0
+FROM amazoncorretto:17.0.12
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+##Run Docker build image: interminal macOs, linux, windown
+# docker build -t web-app-backend-springboot:1.0.1 .
+
+##Create docker network
+# docker network create web-app-backend-springboot-network
+
+##Start Mysql in web-app-backend-springboot-network
+# docker run --network web-app-backend-springboot-network --name mysql-connect -p 3307:3306 -e MYSQL_ROOT_PASSWORD=12042003 -d mysql:8.2.0
+
+##Run your application in web-app-backend-springboot-network
+# docker run --name web-app-backend-springboot --network web-app-backend-springboot-network -p 8088:8088 -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql-connect:3307/shopapp web-app-backend-springboot:1.0.1

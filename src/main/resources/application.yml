@@ -45,10 +45,11 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6380}
 
+#config domain protocal
 api:
   prefix: /api/v1
 domain:
-  protocol: http://localhost:${server.port}
+  protocol: http://localhost:8088
 
 jwt:
   expiration: 2592000 # 30 days = 30 * 24 * 60 * 60

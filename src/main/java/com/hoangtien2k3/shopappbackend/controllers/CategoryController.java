@@ -23,7 +23,7 @@ public class CategoryController extends TranslateMessages {
 
     private final CategoryService categoryService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createCategory(@RequestBody @Valid CategoryDTO categoryDTO,
                                             BindingResult bindingResult) {
@@ -65,7 +65,7 @@ public class CategoryController extends TranslateMessages {
                 .build());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCategories(@PathVariable("id") Long id,
                                               @RequestBody CategoryDTO categoryDTO) {
@@ -76,7 +76,7 @@ public class CategoryController extends TranslateMessages {
                 .build());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable("id") Long id) {
         try {

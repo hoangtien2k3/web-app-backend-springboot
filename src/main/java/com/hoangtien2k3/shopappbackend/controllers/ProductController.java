@@ -46,7 +46,7 @@ public class ProductController extends TranslateMessages {
     private final ProductService productService;
     private final ProductRedisService productRedisService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
@@ -75,7 +75,7 @@ public class ProductController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(
             value = "/uploads/{id}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -224,7 +224,6 @@ public class ProductController extends TranslateMessages {
                 .build());
     }
 
-
     //    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
@@ -270,7 +269,7 @@ public class ProductController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") Long id,
                                            @RequestBody ProductDTO productDTO
@@ -285,7 +284,7 @@ public class ProductController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductById(@PathVariable("id") Long id) {
         try {
@@ -313,7 +312,7 @@ public class ProductController extends TranslateMessages {
 //    }
 
     // fack dữ liệu
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/generate-faceker-products")
     public ResponseEntity<?> generateFacekerProducts() {
         Faker faker = new Faker(new Locale("vi")); // new Locale("en")

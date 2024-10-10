@@ -46,7 +46,6 @@ public class UserController extends TranslateMessages {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Bad request")
     })
     @PostMapping("/register")
-    @Transactional
     public ResponseEntity<ApiResponse<?>> createUser(@RequestBody @Valid UserDTO userDTO,
                                                      BindingResult bindingResult) {
         try {
@@ -165,7 +164,7 @@ public class UserController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional
     @PutMapping("/details/{userId}")
     public ResponseEntity<ApiResponse<?>> updateUserDetails(
@@ -193,7 +192,7 @@ public class UserController extends TranslateMessages {
     }
 
     @GetMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAllUsers(
             @RequestParam(defaultValue = "", name = "keyword", required = false) String keyword,
             @RequestParam(defaultValue = "0", name = "page") int page,
@@ -222,7 +221,7 @@ public class UserController extends TranslateMessages {
 
     // reset password với quyen ADMIN
     @PutMapping("/reset-password/{userId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<?>> resetPassword(@Valid @PathVariable("userId") long id) {
         try {
             String newPasword = UUID.randomUUID().toString().substring(0, 8);
@@ -240,7 +239,7 @@ public class UserController extends TranslateMessages {
     }
 
     @PutMapping("/block/{userId}/{active}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ApiResponse<?>> blockOrEnable(
             @Valid @PathVariable("userId") long id,
             @Valid @PathVariable("active") int active

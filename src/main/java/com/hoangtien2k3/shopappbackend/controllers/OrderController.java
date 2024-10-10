@@ -28,7 +28,7 @@ public class OrderController extends TranslateMessages {
 
     private final OrderService orderService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("")
     public ResponseEntity<?> createOrder(@RequestBody @Valid OrderDTO orderDTO,
                                          BindingResult bindingResult) {
@@ -66,7 +66,7 @@ public class OrderController extends TranslateMessages {
     /**
      * Lấy ra danh sách đơn hàng theo user_id
      **/
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/user/{user_id}")
     public ResponseEntity<?> getOrders(@Valid @PathVariable("user_id") Long userId) {
         try {
@@ -88,7 +88,7 @@ public class OrderController extends TranslateMessages {
     /*
     lẩy ra chi tiết đơn hàng theo order_id
     */
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(@Valid @PathVariable("id") Long orderId) {
         try {
@@ -108,7 +108,7 @@ public class OrderController extends TranslateMessages {
     /*
     Lấy ra tất cả các đơn hàng với quyền ADMIN
     */
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-order-by-keyword")
     public ResponseEntity<OrderPageResponse> getOrderByKeyword(
             @RequestParam(defaultValue = "", required = false) String keyword,
@@ -133,7 +133,7 @@ public class OrderController extends TranslateMessages {
                 .build());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrder(
             @Valid @PathVariable long id,
@@ -154,7 +154,7 @@ public class OrderController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@Valid @PathVariable long id) {
         // xoá mềm => cập nhật trường active false

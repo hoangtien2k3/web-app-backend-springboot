@@ -25,7 +25,7 @@ public class OrderDetailController extends TranslateMessages {
 
     private final OrderDetailService orderDetailService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("")
     public ResponseEntity<?> createOrderDetail(
             @Valid @RequestBody OrderDetailDTO orderDetailDTO,
@@ -57,7 +57,7 @@ public class OrderDetailController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderDetail(@Valid @PathVariable("id") Long id) throws Exception {
         OrderDetail orderDetail = orderDetailService.getOrderDetail(id);
@@ -65,7 +65,7 @@ public class OrderDetailController extends TranslateMessages {
         // return ResponseEntity.ok(OrderDetailResponse.fromOrderDetail(orderDetail));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/order/{orderId}")
     public ResponseEntity<?> getOrderDetails(@Valid @PathVariable("orderId") Long orderId) {
         List<OrderDetailResponse> orderDetailResponses = orderDetailService.findByOrderId(orderId)
@@ -75,7 +75,7 @@ public class OrderDetailController extends TranslateMessages {
         return ResponseEntity.ok(ApiResponse.builder().success(true).payload(orderDetailResponses).build());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateOrderDetail(
             @Valid @RequestBody OrderDetailDTO orderDetailDTO,
@@ -89,7 +89,7 @@ public class OrderDetailController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrderDetail(@Valid @PathVariable("id") Long id) {
         try {

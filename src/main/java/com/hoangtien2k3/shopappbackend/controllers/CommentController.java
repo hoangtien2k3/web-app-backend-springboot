@@ -41,7 +41,7 @@ public class CommentController extends TranslateMessages {
                 .build());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateComments(@PathVariable("id") Long commentId,
                                             @Valid @RequestBody CommentDTO commentDTO,
@@ -61,7 +61,7 @@ public class CommentController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping("")
     public ResponseEntity<?> insertComments(@Valid @RequestBody CommentDTO commentDTO,
                                             Authentication authentication) {
@@ -81,7 +81,7 @@ public class CommentController extends TranslateMessages {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
         try {

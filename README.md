@@ -87,7 +87,34 @@ Follow these steps to set up and run the backend:
 
 [http://localhost:8088/swagger-ui/index.html](http://localhost:8088/swagger-ui/index.html)
 
-<img width="1440" alt="image" src="https://github.com/user-attachments/assets/0876cde6-ee3b-4062-a8a5-ab884c0d0e8d">
+<img width="1440" alt="image" src="./database.png">
+
+## Mysql dump with Docker
+
+1. Show container docker desktop
+```bash
+docker ps
+```
+
+2. Connect docker path
+```bash
+docker exec -it <docker_container> /bin/bash
+```
+
+3. Dump data mysql
+```bash
+mysqldump -u root -p shopapp > /tmp/dumpfile.sql 
+```
+
+4. Exit docker bath
+```bash
+exit
+```
+
+5. Copy dumpfile in docker bath to desktop
+```bash
+docker cp mysql8-container:/tmp/dumpfile.sql ~/Desktop/dumpfile.sql
+```
 
 ## Technologies Used
 

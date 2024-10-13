@@ -84,10 +84,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of(String.format("%s/roles**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/products**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/categories**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/brands**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/comments**", apiPrefix), "GET"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/refresh-token", apiPrefix), "POST"),
+
+                Pair.of(String.format("%s/categories", apiPrefix), "POST"),
+                Pair.of(String.format("%s/brands", apiPrefix), "POST"),
+                Pair.of(String.format("%s/comments", apiPrefix), "POST"),
+                Pair.of(String.format("%s/products/uploads/**", apiPrefix), "POST"),
 
                 // sagger-ui
                 Pair.of("/v2/api-docs", "GET"),

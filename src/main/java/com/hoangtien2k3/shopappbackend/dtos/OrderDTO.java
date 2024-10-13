@@ -13,8 +13,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class OrderDTO {
     @Min(value = 1, message = MessageKeys.USER_ID_REQUIRED)
     @JsonProperty("user_id")

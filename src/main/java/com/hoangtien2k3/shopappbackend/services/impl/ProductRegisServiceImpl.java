@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,12 +39,12 @@ public class ProductRegisServiceImpl implements ProductRedisService {
 
     @Override
     public void clear() {
-        // Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().serverCommands();
-        redisTemplate.getConnectionFactory().getConnection().flushDb();
+         Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().serverCommands();
+//        redisTemplate.getConnectionFactory().getConnection().flushDb();
     }
 
     @Override
-    public List<ProductResponse> getAllProducts(String keyword,
+    public List<ProductResponse> getAllProductsInCached(String keyword,
                                                 Long categoryId,
                                                 PageRequest pageRequest,
                                                 String sortField,
@@ -57,7 +58,7 @@ public class ProductRegisServiceImpl implements ProductRedisService {
     }
 
     @Override
-    public void saveAllProducts(List<ProductResponse> productResponses,
+    public void saveAllProductsInCached(List<ProductResponse> productResponses,
                                 String keyword,
                                 Long categoryId,
                                 PageRequest pageRequest,

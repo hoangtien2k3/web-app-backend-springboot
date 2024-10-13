@@ -1,7 +1,7 @@
 package com.hoangtien2k3.shopappbackend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,9 +15,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Builder
-@Setter
+@Data
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
@@ -50,12 +49,19 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "google_account_id")
     private int googleAccountId;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "gender")
+    private String gender;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
     // một user có thể có nhiều commnet
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
     @Override

@@ -1,12 +1,15 @@
 package com.hoangtien2k3.shopappbackend.controllers;
 
 import com.hoangtien2k3.shopappbackend.components.TranslateMessages;
+import com.hoangtien2k3.shopappbackend.dtos.order.OrderRequestDTO;
 import com.hoangtien2k3.shopappbackend.dtos.OrderDTO;
 import com.hoangtien2k3.shopappbackend.models.Order;
 import com.hoangtien2k3.shopappbackend.responses.ApiResponse;
 import com.hoangtien2k3.shopappbackend.responses.order.OrderPageResponse;
 import com.hoangtien2k3.shopappbackend.responses.order.OrderResponse;
+import com.hoangtien2k3.shopappbackend.responses.order.response.OrderBatchResponse;
 import com.hoangtien2k3.shopappbackend.services.OrderService;
+import com.hoangtien2k3.shopappbackend.utils.DataUtil;
 import com.hoangtien2k3.shopappbackend.utils.MessageKeys;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("${api.prefix}/orders")
@@ -31,36 +34,58 @@ public class OrderController extends TranslateMessages {
 //    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("")
     public ResponseEntity<?> createOrder(@RequestBody @Valid OrderDTO orderDTO,
-                                         BindingResult bindingResult) {
-        try {
-            if (bindingResult.hasErrors()) {
-                List<String> errorMessages = bindingResult.getFieldErrors()
-                        .stream()
-                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                        .toList();
-                return ResponseEntity.badRequest().body(
-                        ApiResponse.builder()
-                                .errors(errorMessages.stream()
-                                        .map(this::translate)
-                                        .toList()).build()
-                );
-            }
-
-            Order order = orderService.createOrder(orderDTO);
-            return ResponseEntity.ok().body(
-                    ApiResponse.<Order>builder()
-                            .success(true)
-                            .message(translate(MessageKeys.CREATE_ORDER_SUCCESS, order.getId()))
-                            .payload(order)
-                            .build()
-            );
-        } catch (Exception e) {
+                                         BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            List<String> errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
             return ResponseEntity.badRequest().body(
                     ApiResponse.builder()
-                            .error(e.getMessage())
-                            .message(translate(MessageKeys.CREATE_ORDER_FAILED)).build()
+                            .errors(errorMessages.stream()
+                                    .map(this::translate)
+                                    .toList()).build()
             );
         }
+        ApiResponse<Order> order = orderService.createOrder(orderDTO);
+        if (!order.isSuccess() && Objects.equals(order.getError(), "-1")) {
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.builder()
+                            .error("-1")
+                            .message(translate(MessageKeys.CREATE_ORDER_FAILED))
+                            .errors(order.getErrors())
+                            .build()
+            );
+        }
+        return ResponseEntity.ok().body(
+                ApiResponse.<Order>builder().success(true)
+                        .message(translate(MessageKeys.CREATE_ORDER_SUCCESS, order.getId()))
+                        .payload(order.getPayload()).build()
+        );
+    }
+
+    //Tạo chi tiết đơn hàng
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrderBatch(@RequestBody @Valid OrderRequestDTO orderInfoDTO,
+                                              BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            List<String> errorMessages = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.builder().errors(errorMessages.stream().map(this::translate).toList()).build()
+            );
+        }
+        ApiResponse<OrderBatchResponse> apiResponse = orderService.createOrderBatch(orderInfoDTO);
+        if (DataUtil.isNullOrEmpty(apiResponse) && !apiResponse.isSuccess() && !Objects.equals(apiResponse.getError(), "1")) {
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.builder().error("-1").message(translate(MessageKeys.CREATE_ORDER_FAILED)).build()
+            );
+        }
+        return ResponseEntity.ok().body(
+                ApiResponse.<OrderBatchResponse>builder().success(true).message(translate(MessageKeys.CREATE_ORDER_SUCCESS, apiResponse.getId())).payload(apiResponse.getPayload()).build()
+        );
     }
 
     /**
@@ -93,6 +118,7 @@ public class OrderController extends TranslateMessages {
     public ResponseEntity<?> getOrder(@Valid @PathVariable("id") Long orderId) {
         try {
             Order existsOrder = orderService.getOrderById(orderId);
+//            OrderBatchResponse orderResponse = orderService.getOrder(existsOrder);
             OrderResponse orderResponse = OrderResponse.fromOrder(existsOrder);
             return ResponseEntity.ok(ApiResponse.builder()
                     .success(true)

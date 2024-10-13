@@ -6,10 +6,8 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Builder
 @Data
+@Builder
 @Entity
 @Table(name = "order_details")
 public class OrderDetail {
@@ -27,14 +25,20 @@ public class OrderDetail {
     private Product product;
 
     @Column(name = "price", nullable = false)
-    private Float price;
+    private Double price;
 
     @Column(name = "number_of_products", nullable = false)
     private Integer numberOfProducts;
 
     @Column(name = "total_money", nullable = false)
-    private Float totalMoney;
+    private Double totalMoney;
 
     @Column(name = "color", length = 20)
     private String color;
+
+    @Column(name = "brand_id")
+    private Long brandId;
+
+    @Column(name = "order_quantity")
+    private Integer orderQuantity;
 }

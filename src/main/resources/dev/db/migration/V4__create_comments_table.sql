@@ -1,3 +1,4 @@
+-- tao table comments (binh luan)
 CREATE TABLE comments
 (
     id         INT PRIMARY KEY AUTO_INCREMENT,

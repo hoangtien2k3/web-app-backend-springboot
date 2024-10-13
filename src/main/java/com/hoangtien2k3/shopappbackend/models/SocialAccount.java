@@ -5,9 +5,8 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @Builder
-@Setter
 @Entity
 @Table(name = "social_accounts")
 public class SocialAccount {

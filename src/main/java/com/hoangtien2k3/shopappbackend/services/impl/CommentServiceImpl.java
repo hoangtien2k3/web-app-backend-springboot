@@ -45,7 +45,6 @@ public class CommentServiceImpl extends TranslateMessages
                 .product(productRepository.findById(commentDTO.getProductId()).get())
                 .content(commentDTO.getContent())
                 .build();
-
         return commentRepository.save(newComment);
     }
 

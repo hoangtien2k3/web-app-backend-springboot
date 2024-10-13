@@ -7,9 +7,7 @@ import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Builder
-@Setter
 @Data
 @Entity
 @Table(name = "tokens")

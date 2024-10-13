@@ -76,7 +76,11 @@ public class WebSecurityConfig {
                                 String.format("%s/users/refresh-token", apiPrefix),
                                 String.format("%s/products/uploads", apiPrefix),
                                 String.format("%s/products", apiPrefix),
-                                String.format("%s/products/**", apiPrefix)
+                                String.format("%s/products/**", apiPrefix),
+                                String.format("%s/products/uploads/**", apiPrefix),
+                                String.format("%s/categories", apiPrefix),
+                                String.format("%s/brands", apiPrefix),
+                                String.format("%s/comments", apiPrefix)
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

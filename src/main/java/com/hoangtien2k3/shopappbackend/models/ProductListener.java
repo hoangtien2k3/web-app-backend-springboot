@@ -37,7 +37,7 @@ public class ProductListener {
 
     @PreRemove
     public void onPreRemove(Product product) {
-        // ApplicationEvenPublisher.instance().publishEvent(event);
+//         ApplicationEvenPublisher.instance().publishEvent(event);
         log.info("onPreRemove: {}", product);
     }
 

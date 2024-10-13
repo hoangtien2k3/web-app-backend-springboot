@@ -1,7 +1,6 @@
 package com.hoangtien2k3.shopappbackend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hoangtien2k3.shopappbackend.models.ProductImage;
 import com.hoangtien2k3.shopappbackend.utils.MessageKeys;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,11 +20,25 @@ public class ProductDTO {
     private String name;
 
     @Min(value = 0, message = MessageKeys.PRODUCT_PRICE_MIN_REQUIRED)
-    @Max(value = 100000000, message = MessageKeys.PRODUCT_PRICE_MAX_REQUIRED)
-    private Float price;
+    @Max(value = 1000000000, message = MessageKeys.PRODUCT_PRICE_MAX_REQUIRED)
+    private Double price;
 
     private String thumbnail;
     private String description;
+
+    @Min(value = 0, message = MessageKeys.PRODUCT_PRICE_MIN_REQUIRED)
+    @Max(value = 1000000000, message = MessageKeys.PRODUCT_PRICE_MAX_REQUIRED)
+    @JsonProperty("product_original_price")
+    private Double productOriginalPrice;
+
+    @JsonProperty("product_img")
+    private String productImg;
+
+    @JsonProperty("brand_id")
+    private Long brandId;
+
+    @JsonProperty("product_stock")
+    private Integer productStock;
 
     @JsonProperty("category_id")
     private Long categoryId;

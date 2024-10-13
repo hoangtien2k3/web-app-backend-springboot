@@ -6,8 +6,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class CommentDTO {
     @JsonProperty("product_id")
     private Long productId;

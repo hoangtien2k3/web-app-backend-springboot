@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     // lấy ra tất cả user (ngoại trừ admin) với truyền admin
-    @Query(ConfixSql.User.GET_ALL_USER)
+    @Query(value = ConfixSql.User.GET_ALL_USER)
     Page<User> fillAll(@Param("keyword") String keyword, Pageable pageable);
 }

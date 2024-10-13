@@ -206,7 +206,7 @@ VALUES (1, '0', '<< Flyway Baseline >>', 'BASELINE', '<< Flyway Baseline >>', NU
        (4, '3', 'refresh token', 'SQL', 'V3__refresh_token.sql', -1233402322, 'root', '2024-05-21 02:46:38', 21, 1),
        (5, '4', 'create comments table', 'SQL', 'V4__create_comments_table.sql', 616245320, 'root',
         '2024-05-25 08:05:08', 36, 1),
-       (6, '5', 'create soupon table', 'SQL', 'V5__create_soupon_table.sql', -1301014831, 'root', '2024-05-25 08:24:21',
+       (6, '5', 'create soupon table', 'SQL', 'V5__create_coupons_table.sql', -1301014831, 'root', '2024-05-25 08:24:21',
         133, 1);
 /*!40000 ALTER TABLE `flyway_schema_history`
     ENABLE KEYS */;

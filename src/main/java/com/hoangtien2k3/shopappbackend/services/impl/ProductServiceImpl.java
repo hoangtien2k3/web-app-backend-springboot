@@ -3,18 +3,24 @@ package com.hoangtien2k3.shopappbackend.services.impl;
 import com.hoangtien2k3.shopappbackend.components.TranslateMessages;
 import com.hoangtien2k3.shopappbackend.dtos.ProductDTO;
 import com.hoangtien2k3.shopappbackend.dtos.ProductImageDTO;
+import com.hoangtien2k3.shopappbackend.exceptions.payload.BusinessException;
 import com.hoangtien2k3.shopappbackend.exceptions.payload.DataNotFoundException;
 import com.hoangtien2k3.shopappbackend.exceptions.payload.InvalidParamException;
 import com.hoangtien2k3.shopappbackend.mapper.ProductMapper;
+import com.hoangtien2k3.shopappbackend.models.Brand;
 import com.hoangtien2k3.shopappbackend.models.Category;
 import com.hoangtien2k3.shopappbackend.models.Product;
 import com.hoangtien2k3.shopappbackend.models.ProductImage;
+import com.hoangtien2k3.shopappbackend.repositories.BrandRepository;
 import com.hoangtien2k3.shopappbackend.repositories.CategoryRepository;
 import com.hoangtien2k3.shopappbackend.repositories.ProductImageRepository;
 import com.hoangtien2k3.shopappbackend.repositories.ProductRepository;
 //import com.hoangtien2k3.shopappbackend.repositories.ProductSearchRepository;
 import com.hoangtien2k3.shopappbackend.responses.product.ProductResponse;
+import com.hoangtien2k3.shopappbackend.services.BrandService;
 import com.hoangtien2k3.shopappbackend.services.ProductService;
+import com.hoangtien2k3.shopappbackend.services.ValidateService;
+import com.hoangtien2k3.shopappbackend.utils.DateUtil;
 import com.hoangtien2k3.shopappbackend.utils.MessageKeys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.hoangtien2k3.shopappbackend.utils.MessageKeys.BRANDS_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl extends TranslateMessages implements ProductService {
@@ -35,11 +43,15 @@ public class ProductServiceImpl extends TranslateMessages implements ProductServ
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductMapper productMapper;
+    private final ValidateService validateService;
+    private final BrandRepository brandRepository;
 //    private final ProductSearchRepository productSearchRepository;
 
     @Override
     @Transactional
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
+        //validate product
+        validateService.validateProduct(productDTO);
         Category existsCategory = categoryRepository
                 .findById(productDTO.getCategoryId())
                 .orElseThrow(() ->
@@ -47,8 +59,16 @@ public class ProductServiceImpl extends TranslateMessages implements ProductServ
                                 translate(MessageKeys.CATEGORY_NOT_FOUND, productDTO.getCategoryId())
                         )
                 );
+        Brand existsBrand = brandRepository
+                .findById(productDTO.getBrandId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                translate(BRANDS_NOT_FOUND, productDTO.getBrandId())
+                        )
+                );
         Product savedProduct = productMapper.toProduct(productDTO);
         savedProduct.setCategory(existsCategory);
+        savedProduct.setBrand(existsBrand);
         return productRepository.save(savedProduct);
     }
 
@@ -94,6 +114,7 @@ public class ProductServiceImpl extends TranslateMessages implements ProductServ
             existsProduct.setPrice(productDTO.getPrice());
             existsProduct.setDescription(productDTO.getDescription());
             existsProduct.setThumbnail(productDTO.getThumbnail());
+            existsProduct.setProductImg(productDTO.getProductImg());
             return productRepository.save(existsProduct);
         }
 

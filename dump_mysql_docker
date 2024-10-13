@@ -1,0 +1,15 @@
+-- dump mysql file in docker
+
+-- TONG QUAT:
+1. docker ps
+2. docker exec -it <docker_container> /bin/bash
+3. mysqldump -u root -p <database_name> > /tmp/dumpfile.sql
+4. exit
+5. docker cp <docker_container>:/tmp/dumpfile.sql ~/Desktop/dumpfile.sql
+
+-- DEMO CAU LENH:
+1. docker ps
+2. docker exec -it mysql8-container /bin/bash
+3. mysqldump -u root -p shopapp > /tmp/dumpfile.sql
+4. exit
+5. docker cp mysql8-container:/tmp/dumpfile.sql ~/Desktop/dumpfile.sql

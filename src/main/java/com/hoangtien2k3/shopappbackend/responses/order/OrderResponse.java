@@ -4,12 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hoangtien2k3.shopappbackend.models.Order;
 import com.hoangtien2k3.shopappbackend.responses.BaseResponse;
 import com.hoangtien2k3.shopappbackend.responses.order_detail.OrderDetailResponse;
+import com.hoangtien2k3.shopappbackend.utils.DateUtil;
 import jakarta.persistence.Column;
 import lombok.*;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -38,13 +42,13 @@ public class OrderResponse extends BaseResponse {
     private String note;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private String orderDate;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "total_money")
-    private Float totalMoney;
+    private String totalMoney;
 
     @Column(name = "shipping_method")
     private String shippingMethod;
@@ -76,9 +80,9 @@ public class OrderResponse extends BaseResponse {
                 .email(order.getEmail())
                 .address(order.getAddress())
                 .note(order.getNote())
-                .orderDate(order.getOrderDate())
+                .orderDate(DateUtil.date2ddMMyyyyHHMMss(order.getOrderDate()))
                 .status(order.getStatus())
-                .totalMoney(order.getTotalMoney())
+                .totalMoney(convertDoubleToString(order.getTotalMoney()))
                 .shippingMethod(order.getShippingMethod())
                 .shippingAddress(order.getShippingAddress())
                 .shippingDate(order.getShippingDate())
@@ -93,6 +97,12 @@ public class OrderResponse extends BaseResponse {
 
     public static List<OrderResponse> fromOrdersList(List<Order> ordersList) {
         return ordersList.stream().map(OrderResponse::fromOrder).toList();
+    }
+
+    private static String convertDoubleToString(Float price) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.US);
+        formatter.applyPattern("#,###");
+        return formatter.format(price);
     }
 
 }

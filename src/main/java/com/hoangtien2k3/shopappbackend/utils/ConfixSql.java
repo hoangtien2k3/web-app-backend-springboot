@@ -30,7 +30,7 @@ public class ConfixSql {
                 "OR o.fullName LIKE %:keyword% " +
                 "OR o.address LIKE %:keyword% " +
                 "OR o.phoneNumber LIKE %:keyword%) " +
-                "AND LOWER(o.role.name) = 'user'";
+                "AND LOWER(o.role.name) = 'ROLE_USER'";
     }
 
     public interface Order {
@@ -38,6 +38,27 @@ public class ConfixSql {
         String GET_ALL_ORDER = "SELECT o FROM Order o WHERE " +
                 "(:keyword IS NULL OR :keyword = '' OR o.fullName LIKE %:keyword% OR o.address LIKE %:keyword% " +
                 "OR o.note LIKE %:keyword%)";
+    }
+
+    public interface Shipping {
+        //lay ra thong tin shipping by orderId
+        String GET_ALL_SHIPPING = """
+                SELECT * FROM shippings s WHERE s.order_id =: id
+                """;
+    }
+
+    public interface ShippingAddress {
+        //lay ra thong tin shipping address
+        String GET_ALL_SHIPPING_ADDRESS = """
+                SELECT * FROM shipping_address s WHERE s.shipping_id =: shippingId;
+                """;
+    }
+
+    public interface Payment {
+        //lay ra thong tin payment by orderId
+        String GET_ALL_PAYMENT = """
+                SELECT * FROM payments p WHERE p.order_id =: orderId
+                """;
     }
 
 }

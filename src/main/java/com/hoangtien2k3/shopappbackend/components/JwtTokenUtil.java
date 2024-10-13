@@ -25,8 +25,12 @@ import java.util.function.Function;
 public class JwtTokenUtil {
 
     private final TokenRepository tokenRepository;
+
     @Value("${jwt.expiration}")
-    private int expiration; // lưu trong biến môi trường
+    private int expiration;
+
+    @Value("${jwt.expiration-refresh-token}")
+    private int refreshTokenExpiration;
 
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -38,19 +42,30 @@ public class JwtTokenUtil {
     // generate token using jwt utility class and return token as string
     public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails) {
         try {
-            return Jwts
+            long now = System.currentTimeMillis();
+            Date issuedAt = new Date(now);
+            Date expirationDate = new Date(now + expiration * 1000L);
+            String token = Jwts
                     .builder()
                     .setClaims(extractClaims)
                     .setSubject(userDetails.getUsername())
-                    .setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                    .setIssuedAt(issuedAt)
+                    .setExpiration(expirationDate)
                     .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                     .compact();
+
+            log.info("Generated Token: {}", token);
+            log.info("Current Time: {}", new Date());
+            log.info("Token Issued At: {}", issuedAt);
+            log.info("Token Expiration Time: {}", expirationDate);
+
+            return token;
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Token generation error: {}", e.getMessage());
             return null;
         }
     }
+
 
     // decode and get the key
     private Key getSignInKey() {
@@ -101,4 +116,13 @@ public class JwtTokenUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //ngay het han access token
+    public Date getTokenExpirationDate() {
+        return new Date(System.currentTimeMillis() + expiration * 1000L);
+    }
+
+    //ngay het han refresh token
+    public Date getRefreshTokenExpirationDate() {
+        return new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000L);  // expiration tính bằng giây
+    }
 }

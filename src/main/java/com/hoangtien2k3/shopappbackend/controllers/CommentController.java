@@ -35,10 +35,7 @@ public class CommentController extends TranslateMessages {
         } else {
             commentResponses = commentService.getCommentByProduct(productId);
         }
-
-        return ResponseEntity.ok(ApiResponse.builder()
-                .payload(commentResponses)
-                .build());
+        return ResponseEntity.ok(ApiResponse.builder().payload(commentResponses).build());
     }
 
 //    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
@@ -66,18 +63,14 @@ public class CommentController extends TranslateMessages {
     public ResponseEntity<?> insertComments(@Valid @RequestBody CommentDTO commentDTO,
                                             Authentication authentication) {
         try {
-            Comment newComment = commentService.insertComment(commentDTO);
+            commentService.insertComment(commentDTO);
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.COMMENT_INSERT_SUCCESS))
-                    .payload(newComment)
                     .build());
         } catch (Exception e) {
-            // handle and log exception
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ApiResponse.builder()
-                            .error(e.getMessage())
-                            .message(translate(MessageKeys.ERROR_MESSAGE))
-                            .build());
+                    .body(ApiResponse.builder().error(e.getMessage())
+                            .message(translate(MessageKeys.ERROR_MESSAGE)).build());
         }
     }
 

@@ -40,6 +40,7 @@ public class MessageKeys {
 
     public static final String PRODUCT_NOT_FOUND = "product.valid.not_found";
     public static final String CATEGORY_NOT_FOUND = "category.valid.not_found";
+    public static final String BRANDS_NOT_FOUND = "brand.not.found.exception";
     public static final String ROLE_NOT_FOUND = "role.valid.not_found";
     public static final String USER_ID_LOCKED = "user.is.lock";
     public static final String USER_ID_UNLOCKED = "user.is.unlock";
@@ -68,12 +69,21 @@ public class MessageKeys {
     public static final String CREATE_ORDER_DETAILS_SUCCESS = "order_details.create.success";
     public static final String CREATE_PRODUCT_SUCCESS = "product.create.successfully";
     public static final String CREATE_PRODUCT_FAILED = "product.create.failed";
+
     public static final String CREATE_CATEGORIES_SUCCESS = "category.create.successfully";
     public static final String CREATE_CATEGORIES_FAILED = "category.create.failed";
     public static final String UPDATE_CATEGORIES_SUCCESS = "category.update.successfully";
     public static final String UPDATE_CATEGORIES_FAILED = "category.update.failed";
     public static final String DELETE_CATEGORIES_SUCCESS = "category.delete.successfully";
     public static final String DELETE_CATEGORIES_FAILED = "category.delete.failed";
+
+    public static final String CREATE_BRANDS_SUCCESS = "brand.create.successfully";
+    public static final String CREATE_BRANDS_FAILED = "brand.create.failed";
+    public static final String UPDATE_BRANDS_SUCCESS = "brand.update.successfully";
+    public static final String UPDATE_BRANDS_FAILED = "brand.update.failed";
+    public static final String DELETE_BRANDS_SUCCESS = "brand.delete.successfully";
+    public static final String DELETE_BRANDS_FAILED = "brand.delete.failed";
+
     public static final String DELETE_COMMENT_SUCCESS = "comment.delete.success";
     public static final String DELETE_COMMENT_FAILED = "comment.delete.failed";
 

@@ -50,7 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(Long categoryId) {
-        // xoá cứng trong DB
         categoryRepository.deleteById(categoryId);
     }
 

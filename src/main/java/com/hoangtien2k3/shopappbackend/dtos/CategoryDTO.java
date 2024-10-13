@@ -7,8 +7,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class CategoryDTO {
     @NotEmpty(message = MessageKeys.CATEGORIES_NAME_REQUIRED)
     private String name;

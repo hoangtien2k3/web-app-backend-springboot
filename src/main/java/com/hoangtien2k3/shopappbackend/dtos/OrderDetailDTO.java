@@ -8,8 +8,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class OrderDetailDTO {
     @JsonProperty("order_id")
     @Min(value = 1, message = MessageKeys.ORDER_ID_REQUIRED)
@@ -20,7 +18,7 @@ public class OrderDetailDTO {
     private Long productId;
 
     @Min(value = 0, message = MessageKeys.PRODUCT_PRICE_MIN_REQUIRED)
-    private Float price;
+    private Double price;
 
     @JsonProperty("number_of_products")
     @Min(value = 1, message = MessageKeys.NUMBER_OF_PRODUCT_REQUIRED)
@@ -28,7 +26,7 @@ public class OrderDetailDTO {
 
     @JsonProperty("total_money")
     @Min(value = 0, message = MessageKeys.TOTAL_MONEY_REQUIRED)
-    private Float totalMoney;
+    private Double totalMoney;
 
     private String color;
 }

@@ -41,8 +41,8 @@ public class CategoryController extends TranslateMessages {
                                         .toList()).build()
                 );
             }
-            Category newCategory = categoryService.createCategory(categoryDTO);
 
+            Category newCategory = categoryService.createCategory(categoryDTO);
             return ResponseEntity.ok(ApiResponse.builder().success(true)
                     .message(translate(MessageKeys.CREATE_CATEGORIES_SUCCESS))
                     .payload(newCategory)

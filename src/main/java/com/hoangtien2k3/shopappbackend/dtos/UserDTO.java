@@ -6,12 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
@@ -39,6 +36,12 @@ public class UserDTO {
 
     @JsonProperty("google_account_id")
     private int googleAccountId;
+
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("gender")
+    private String gender;
 
     @JsonProperty("role_id")
     @NotNull(message = MessageKeys.ROLE_ID_REQUIRED)

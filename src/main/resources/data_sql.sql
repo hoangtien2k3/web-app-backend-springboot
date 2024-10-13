@@ -206,7 +206,7 @@ VALUES (1, '0', '<< Flyway Baseline >>', 'BASELINE', '<< Flyway Baseline >>', NU
        (4, '3', 'refresh token', 'SQL', 'V3__refresh_token.sql', -1233402322, 'root', '2024-05-21 02:46:38', 21, 1),
        (5, '4', 'create comments table', 'SQL', 'V4__create_comments_table.sql', 616245320, 'root',
         '2024-10-09 08:05:08', 36, 1),
-       (6, '5', 'create soupon table', 'SQL', 'V5__create_soupon_table.sql', -1301014831, 'root', '2024-05-25 08:24:21',
+       (6, '5', 'create soupon table', 'SQL', 'V5__create_coupons_table.sql', -1301014831, 'root', '2024-05-25 08:24:21',
         133, 1);
 /*!40000 ALTER TABLE `flyway_schema_history`
     ENABLE KEYS */;
@@ -546,7 +546,7 @@ LOCK TABLES `tokens` WRITE;
     DISABLE KEYS */;
 INSERT INTO `tokens`
 VALUES (1,'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwODI4MDA3ODU1IiwiaWF0IjoxNzE2MjY0MDIxLCJleHAiOjE3MTYyNjY2MTN9.490yVdh6wDHNP8Qst7hoOoqgoM9q_wjjZL4wcgcus7E',
-        '4a3783a8-97de-4955-8978-dbe7db561738', 'Bearer', '2024-05-20 21:43:33', 0, 0, 5, 1, '2024-05-20 22:26:45'),;
+        '4a3783a8-97de-4955-8978-dbe7db561738', 'Bearer', '2024-05-20 21:43:33', 0, 0, 5, 1, '2024-05-20 22:26:45');
 /*!40000 ALTER TABLE `tokens`
     ENABLE KEYS */;
 UNLOCK TABLES;

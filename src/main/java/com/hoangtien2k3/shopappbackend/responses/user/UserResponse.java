@@ -7,8 +7,7 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +34,12 @@ public class UserResponse {
     @JsonProperty("google_account_id")
     private int googleAccountId;
 
+    @JsonProperty("email")
+    private String email;
+
+    @JsonProperty("gender")
+    private String gender;
+
     private Role role;
 
     public static UserResponse fromUser(User user) {
@@ -47,8 +52,20 @@ public class UserResponse {
                 .dateOfBirth(user.getDateOfBirth())
                 .facebookAccountId(user.getFacebookAccountId())
                 .googleAccountId(user.getGoogleAccountId())
+                .gender(user.getGender())
+                .email(user.getEmail())
                 .role(user.getRole())
                 .build();
     }
+
+    public static UserCommentsResponse fromUserComments(User user) {
+        return UserCommentsResponse.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .active(user.isActive())
+                .build();
+    }
+
+
 
 }

@@ -3,7 +3,7 @@ package com.hoangtien2k3.shopappbackend.responses;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Getter
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BaseResponse {
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
 }

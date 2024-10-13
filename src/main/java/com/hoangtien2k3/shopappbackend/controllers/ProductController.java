@@ -20,11 +20,9 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +61,12 @@ public class ProductController extends TranslateMessages {
             }
 
             Product newProduct = productService.createProduct(productDTO);
+            //convert product response
+            ProductResponse productResponse = ProductResponse.fromProduct(newProduct);
             return ResponseEntity.ok(
                     ApiResponse.builder().success(true)
                             .message(translate(MessageKeys.CREATE_PRODUCT_SUCCESS))
-                            .payload(newProduct)
+                            .payload(productResponse)
                             .build()
             );
         } catch (Exception e) {
@@ -191,15 +191,16 @@ public class ProductController extends TranslateMessages {
     ) throws JsonProcessingException {
         PageRequest pageRequest = PageRequest.of(page, limit);
         // find in redis memory
-        List<ProductResponse> productResponses = productRedisService.getAllProducts(
-                keyword, categoryId, pageRequest, sortField, sortDirection);
+//        List<ProductResponse> productResponses = productRedisService.getAllProductsInCached(
+//                keyword, categoryId, pageRequest, sortField, sortDirection);
 
+        List<ProductResponse> productResponses = null;
         if (productResponses == null) {
             Page<ProductResponse> productPage = productService.getAllProducts(keyword, categoryId, pageRequest, sortField, sortDirection);
             List<ProductResponse> products = productPage.getContent();
 
             // Lưu sản phẩm vào Redis cache nếu không tìm thấy trong Redis
-            productRedisService.saveAllProducts(products, keyword, categoryId, pageRequest, sortField, sortDirection);
+            productRedisService.saveAllProductsInCached(products, keyword, categoryId, pageRequest, sortField, sortDirection);
 
             return ResponseEntity.ok(ProductPageResponse.builder()
                     .products(products)
@@ -323,7 +324,7 @@ public class ProductController extends TranslateMessages {
             }
             ProductDTO productDTO = ProductDTO.builder()
                     .name(productName)
-                    .price((float) faker.number().numberBetween(10, 90000000))
+                    .price((double) faker.number().numberBetween(10, 90000000))
                     .description(faker.lorem().sentence())
                     .categoryId((long) faker.number().numberBetween(2, 7))
                     .build();

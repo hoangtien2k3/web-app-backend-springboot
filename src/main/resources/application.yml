@@ -31,7 +31,7 @@ spring:
   messages:
     basename: i18n/messages
     encoding: UTF-8
-    default-locale: en    # mặc định english
+    default-locale: vi    # mặc định vietnam
 
   #flayway
   flyway:

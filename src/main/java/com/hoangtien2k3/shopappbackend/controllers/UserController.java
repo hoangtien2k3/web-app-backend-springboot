@@ -1,9 +1,9 @@
 package com.hoangtien2k3.shopappbackend.controllers;
 
+import com.hoangtien2k3.shopappbackend.components.JwtTokenUtil;
 import com.hoangtien2k3.shopappbackend.components.TranslateMessages;
 import com.hoangtien2k3.shopappbackend.dtos.*;
 import com.hoangtien2k3.shopappbackend.dtos.UserLoginDTO;
-import com.hoangtien2k3.shopappbackend.mapper.UserMapper;
 import com.hoangtien2k3.shopappbackend.models.Token;
 import com.hoangtien2k3.shopappbackend.models.User;
 import com.hoangtien2k3.shopappbackend.responses.ApiResponse;
@@ -13,26 +13,29 @@ import com.hoangtien2k3.shopappbackend.responses.user.UserRegisterResponse;
 import com.hoangtien2k3.shopappbackend.responses.user.UserResponse;
 import com.hoangtien2k3.shopappbackend.services.UserService;
 import com.hoangtien2k3.shopappbackend.services.impl.TokenServiceImpl;
+import com.hoangtien2k3.shopappbackend.utils.DataUtil;
+import com.hoangtien2k3.shopappbackend.utils.DateUtil;
 import com.hoangtien2k3.shopappbackend.utils.MessageKeys;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("${api.prefix}/users")
 @RequiredArgsConstructor
@@ -40,6 +43,7 @@ public class UserController extends TranslateMessages {
 
     private final UserService userService;
     private final TokenServiceImpl tokenService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Created"),
@@ -60,7 +64,7 @@ public class UserController extends TranslateMessages {
                                         .toList()).build()
                 );
             }
-            if (!userDTO.getPassword().equals(userDTO.getRetypePassword())) {
+            if (!DataUtil.safeEqual(userDTO.getPassword(), userDTO.getRetypePassword())) {
                 return ResponseEntity.badRequest().body(ApiResponse.builder()
                         .message(translate(MessageKeys.ERROR_MESSAGE))
                         .error(translate(MessageKeys.PASSWORD_NOT_MATCH)).build()
@@ -69,9 +73,11 @@ public class UserController extends TranslateMessages {
 
             User newUser = userService.createUser(userDTO);
             return ResponseEntity.ok().body(
-                    ApiResponse.builder().success(true)
+                    ApiResponse.builder()
+                            .success(true)
                             .message(translate(MessageKeys.REGISTER_SUCCESS))
-                            .payload(UserRegisterResponse.fromUser(newUser)).build()
+                            .payload(UserRegisterResponse.fromUser(newUser))
+                            .build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.builder()
@@ -109,12 +115,21 @@ public class UserController extends TranslateMessages {
             User user = userService.getUserDetailsFromToken(tokenGenerator);
             Token token = tokenService.addTokenEndRefreshToken(user, tokenGenerator, isMoblieDevice(userAgent));
 
+            //lay ra thoi gian expireDate cua token
+            Date tokenTimeExpireDate = jwtTokenUtil.getTokenExpirationDate();
+            Date refreshTokenTimeExpireDate = jwtTokenUtil.getRefreshTokenExpirationDate();
+            String tokenTimeExpireDateStr = DateUtil.dateyyyyMMddHHmmSS(tokenTimeExpireDate);
+            String refreshTokenTimeExpireDateStr = DateUtil.dateyyyyMMddHHmmSS(refreshTokenTimeExpireDate);
+
             ApiResponse<LoginResponse> apiResponse = ApiResponse.<LoginResponse>builder()
                     .success(true)
                     .message(translate(MessageKeys.LOGIN_SUCCESS))
                     .payload(LoginResponse.builder()
+                            .type("Bearer")
                             .token(token.getToken())
+                            .tokenExpireDate(tokenTimeExpireDateStr)
                             .refreshToken(token.getRefreshToken())
+                            .refreshTokenExpireDate(refreshTokenTimeExpireDateStr)
                             .build())
                     .build();
             return ResponseEntity.ok().body(apiResponse);
@@ -153,18 +168,21 @@ public class UserController extends TranslateMessages {
         try {
             String extractedToken = token.substring(7);
             User user = userService.getUserDetailsFromToken(extractedToken);
-            return ResponseEntity.ok(ApiResponse.<UserResponse>builder().success(true)
-                    .payload(UserResponse.fromUser(user)).build()
+            return ResponseEntity.ok(ApiResponse.<UserResponse>builder()
+                    .success(true)
+                    .payload(UserResponse.fromUser(user))
+                    .build()
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
                     ApiResponse.<UserResponse>builder()
-                            .message(translate(MessageKeys.MESSAGE_ERROR_GET)).error(e.getMessage()).build()
+                            .message(translate(MessageKeys.MESSAGE_ERROR_GET))
+                            .error(e.getMessage()).build()
             );
         }
     }
 
-//    @PreAuthorize("hasRole('ROLE_USER')")
+    //    @PreAuthorize("hasRole('ROLE_USER')")
     @Transactional
     @PutMapping("/details/{userId}")
     public ResponseEntity<ApiResponse<?>> updateUserDetails(
@@ -204,7 +222,6 @@ public class UserController extends TranslateMessages {
             Page<UserResponse> usersPage = userService.findAllUsers(keyword, pageRequest)
                     .map(UserResponse::fromUser);
             List<UserResponse> userResponses = usersPage.getContent();
-
             return ResponseEntity.ok(UserPageResponse.builder()
                     .users(userResponses)
                     .pageNumber(page)
